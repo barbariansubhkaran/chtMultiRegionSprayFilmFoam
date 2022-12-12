@@ -52,7 +52,22 @@ int main(int argc, char *argv[])
     {
           Info << "NEW TIMESTEP" << endl;
 
-          
+          #include "readTimeControls.H"
+          #include "readSolidTimeControls.H"
+          #include "readPimpleControls.H"
+          #include "compressibleMultiRegionCourantNo.H"
+          #include "solidRegionDiffusionNo.H"
+          #include "setMultiRegionDeltaT.H"
+
+        runTime++;
+
+        Info << "Time = " << runTime.timeName() << nl << endl;
+
+        forAll(fluidRegions, i)
+        {
+                
+        }
+
     }
 
 
