@@ -65,8 +65,27 @@ int main(int argc, char *argv[])
 
         forAll(fluidRegions, i)
         {
-                
+                Info << "\n\n----------Solving for spray in fluid region " << fluidRegions[i].name() << "-----------" << endl;
+
+                basicSprayCloud& parcels = parcelsFluid[i];
+                parcels.evolve();
+
+                Info << "\n\n-----------Solving for film in fluid region " << fluidRegions[i].name() << "----------" << endl;
+
+                regionModels::surfaceFilmModels::surfaceFilmModel& surfaceFilm = tsurfaceFilm[i];
+                surfaceFilm.evolve();
         }
+
+          if(nOuterCorr != 1)
+          {
+                forAll(fluidRegions, i)
+                {
+                   #include "setRegionFluidFields.H"
+                   #include "storeOlFluidFields.H"
+                }
+          }
+
+            
 
     }
 
