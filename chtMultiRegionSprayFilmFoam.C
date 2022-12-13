@@ -81,16 +81,46 @@ int main(int argc, char *argv[])
                 forAll(fluidRegions, i)
                 {
                    #include "setRegionFluidFields.H"
-                   #include "storeOlFluidFields.H"
+                   #include "storeOldFluidFields.H"
                 }
           }
 
-            
+            for(int oCorr=0; oCorr < nOuterCorr; oCorr++)
+            {
+                  bool finalIter = oCorr = nOuterCorr - 1;
+
+                  forAll(fluidRegions, i)
+                  {
+                        Info <<  "\n\n-------- Solving for fluid region " << fluidRegions[i].name() << "-----------\n" << endl;
+
+                        #include "setRegionFluidFields.H"
+                        #include "readFluidMultiRegionPIMPLEControls.H"
+                        #include "solveFluid.H"
+                  }
+
+                  forAll(solidRegions, i)
+                  {
+                     Info << "\n\n-----------Solving for solid region " << solidRegions[i].name() << "----------\n" << endl;
+
+                     #include "setRegionSolidFields.H"
+                     #include "readSolidMultiRegionPIMPLEControls.H"
+                     #include "solveSolid.H"
+                  }
+            }
+
+
+            runTime.write();
+
+            Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s" << " ClockTime = " << runTime.elapsedClockTime() << " s" << nl << endl;
 
     }
 
 
+    Info << "End\n" << endl;
 
+
+
+    return 0;
 
 
 
