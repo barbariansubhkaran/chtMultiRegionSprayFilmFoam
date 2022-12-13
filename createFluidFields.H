@@ -10,3 +10,12 @@ PtrList<volScalarField> ghFluid(fluidRegions.size());
 PtrList<surfaceScalarField> ghfFluid(fluidRegions.size());
 PtrList<volScalarField> KFluid(fluidRegions.size());
 PtrList<volScalarField> dpdtFluid(fluidRegions.size());
+
+
+PtrList<combustionModels::psiChemistryCombustionModel> combustion(fluidRegions.size());
+PtrList<volScalarField> dQFluid(fluidRegions.size());
+PtrList<volScalarField> dpdtFluid(fluidRegions.size());
+PtrList<volScalarField> dpdtFluid(fluidRegions.size());
+PtrList<volScalarField> dpdtFluid(fluidRegions.size());
+PtrList<volScalarField> dpdtFluid(fluidRegions.size());
+PtrList<volScalarField> dpdtFluid(fluidRegions.size());
