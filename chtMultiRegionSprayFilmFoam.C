@@ -1,4 +1,4 @@
-#include "fvCFD.h"
+#include "fvCFD.H"
 #include "turbulenceModel.H"
 
 #include "basicSprayCloud.H"
