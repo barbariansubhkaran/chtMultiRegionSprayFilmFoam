@@ -191,9 +191,136 @@ forAll(fluidRegions, i)
           new surfaceScalarField("ghf", gFluid[i] & fluidRegions[i].Cf())
      );
 
+    p_rghFluid.set
+    (
+        i,
+        new volScalarField
+        (
+             IOobject
+             (
+                  "p_rgh",
+                  runTime.timeName(),
+                  fluidRegions[i],
+                  IOobject::MUST_READ,
+                  IOobject::AUTO_WRITE
+             ),
+
+             fluidRegions[i]
+        )
+    );
+
+    p_rghFluid[i] = thermo.p() - rhoFluid[i] * ghFluid[i];
+
+    initialMassFluid[i] = fvc::domainIntegrate(rhoFluid[i]).value();
+
+    Info << "      Adding to KFluid\n" << endl;
+
+    KFluid.set
+    (
+            i,
+            new volScalarField
+            (
+               "K"
+                0.5 * magSqr(UFluid[i])
+            )
+    );
+
+    Info << "     Adding to dpdtFluid\n" << endl;
+
+    dpdtFluid.set
+    (
+       i,
+       new volScalarField
+       (
+            "dpdt",
+            fvc::ddt(thermo.p())
+       )
 
 
+    );
 
+    Info << "    Adding to dQFluid\n" << endl;
 
+    dQFluid.set
+    (
+         i,
+        new volScalarField
+        (
+              IOobject
+              (
+                 "dQ",
+                 runTime.timeName(),
+                 fluidRegions[i],
+                 IOobject::NO_READ,
+                 IOobject::AUTO_WRITE
+              ),
 
+              fluidRegions[i],
+              dimensionedScalar("dQ", dimEnergy/dimTime, 0.0)
+        )
+    );
+
+   multivariateSurfaceInterpolationScheme<scalar>::fieldTable * fieldsi = new multivariateSurfaceInterpolationScheme<scalar>::fieldTable;
+
+   forAll(Y, j)
+   {
+         fieldsi->add(Y[j]);
+   }
+
+    fieldsi->add(hs);
+    fields.set(i, fieldsi);
+
+    Info << "    Adding to parcelsFluid\n" << endl;
+
+    parcelsFluid.set
+    (
+        i,
+        new basicSprayCloud
+        (
+          "sprayCloud",
+          rhoFluid[i],
+          UFluid[i],
+          gFluid[i],
+          thermoFluid[i]
+        )
+
+    );
+
+      Info << "     Adding to KliqFluid\n" << endl;
+      KliqFluid.set
+      (
+              i,
+              new volScalarField
+              (
+                    IOobject
+                    (
+                         "Kliq"
+                         runTime.timeName(),
+                         fluidRegions[i],
+                         IOobject::NO_READ,
+                         IOobject::AUTO_WRITE
+                    ),
+
+                    thermo.Cp() * thermo.alpha()
+              )
+      );
+
+      Info << "       Adding to deltaMapFluid\n" << endl;
+      deltaMapFluid.set
+      (
+           i,
+           new volScalarField
+           (
+                  IOobject
+                  (
+                        "deltaMap",
+                        runTime.timeName(),
+                        fluidRegions[i],
+                        IOobject::MUST_READ,
+                        IOobject::AUTO_WRITE
+                  ),
+
+                  fluidRegions[i]
+           )
+      );
 }
