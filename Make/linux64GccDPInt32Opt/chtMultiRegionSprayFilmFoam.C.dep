@@ -909,6 +909,17 @@ $(WM_PROJECT_DIR)/src/meshTools/lnInclude/meshToolsTemplates.C \
 kinematicCloud.H \
 cloudSolution.H \
 cloudSolutionI.H \
+ParticleForceList.H \
+ParticleForce.H \
+forceSuSp.H \
+forceSuSpI.H \
+ParticleForceI.H \
+ParticleForce.C \
+ParticleForceNew.C \
+ParticleForceListI.H \
+ParticleForceList.C \
+CloudFunctionObjectList.H \
+CloudFunctionObjectListI.H \
 $(WM_PROJECT_DIR)/src/meshTools/lnInclude/regionProperties.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/compressibleCourantNo.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/setRootCase.H \
